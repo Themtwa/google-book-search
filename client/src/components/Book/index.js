@@ -1,40 +1,41 @@
 import React from "react";
-import { ListItem } from "../List";
-import { Row, Col } from "../Grid";
-import "./style.css";
 
-function Book({ title, subtitle, authors, link, description, image, Button }) {
+export default function Book(props) {
+  let description = props.description;
+  let minDesc = "No description available.";
+  if (description !== "" && description !== undefined) {
+    minDesc = description.substring(0, 400) + "...";
+  }
+
   return (
-    <ListItem>
-      <Row className="flex-wrap-reverse">
-        <Col size="md-8">
-          <h3 className="font-italic">{title}</h3>
-          {subtitle && <h5 className="font-italic">{subtitle}</h5>}
-        </Col>
-        <Col size="md-4">
-          <div className="btn-container">
-            <a className="btn btn-light" target="_blank" rel="noopener noreferrer" href={link}>
-              View
-            </a>
-            <Button />
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col size="md-6">
-          <p className="font-italic small">Written by {authors}</p>
-        </Col>
-      </Row>
-      <Row>
-        <Col size="12 sm-4 md-2">
-          <img className="img-thumbnail img-fluid w-100" src={image} alt={title} />
-        </Col>
-        <Col size="12 sm-8 md-10">
-          <p>{description}</p>
-        </Col>
-      </Row>
-    </ListItem>
+    <div className="card">
+      <div className="row">
+        <div className="col-2">
+          <img src={props.img} className="card-img" alt={props.title}></img>
+        </div>
+        <div className="card-body col-10">
+          <h5 className="card-title">{props.title}</h5>
+          <p className="card-text">{minDesc}</p>
+        </div>
+      </div>
+      <ul className="list-group list-group-flush">
+        <li className="list-group-item">Author: {props.authors}</li>
+        <li className="list-group-item">Published: {props.publishedDate}</li>
+      </ul>
+      <div className="card-body">
+        <button
+          className="btn btn-primary"
+          value={props.button}
+          onClick={props.button === "add" ? e => props.addBook(e, props.id) : () => props.deleteBook(props._id)}
+        >
+          {props.button === "add"
+            ? "Add to Collection"
+            : "Delete from Collection"}
+        </button>
+        <a href={props.link} className="card-link">
+          Go to Book
+        </a>
+      </div>
+    </div>
   );
 }
-
-export default Book;
